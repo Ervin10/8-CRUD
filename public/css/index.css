@@ -246,12 +246,30 @@ p {
   padding-top: 30px;
 }
 
+/* Message box */
+div.message {
+  position: relative;
+  top: 70px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  letter-spacing: 1.2px;
+  border: 1px solid rgb(177, 4, 245);
+  background-color: rgb(208, 157, 247);
+  color: white;
+  margin-top: -50px;
+  margin-bottom: 100px;
+}
+/* End message box */
+
 .title {
   margin-top: 50px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   text-align: center;
   font-size: 2rem;
 }
+
 
 .cards {
   width: 31%;

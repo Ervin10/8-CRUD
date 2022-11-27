@@ -56,11 +56,18 @@
     </div>
     <!-- End Navbar -->
 
+
+
      <!-- Cards -->
      <section>
+         <!-- Messade Box -->
+             {{if .pesan}}
+                 <div class="message">{{.pesan}}</div>
+             {{end}}
+         <!-- End message box --> 
         <h2 class="title">MY PROJECT</h2>
         <div class="card-container" id="card-container"> 
-             <!-- Looping DataProjects dari function HandleHome  -->
+             <!-- Looping DataProjects dari function HandleHome -->
              {{range $i, $data := .DataProjects}}
             <div class="cards">
                 <img src="public/assets/img/saitama.png" class="card-image">

@@ -23,6 +23,6 @@ func main() {
 	route.HandleFunc("/edit-project/{id}", handler.HandleEditProject)
 	route.HandleFunc("/delete/{id}", handler.HandleDeleteProject).Methods("GET")
 
-	fmt.Println("Server sedang berjalan di port 3000")
-	http.ListenAndServe("Localhost:3000", route) // panggil untuk dapat diakses di browser par1: string, par2: route
+	fmt.Println("Server sedang berjalan di port 4000")
+	http.ListenAndServe("Localhost:4000", route) // panggil untuk dapat diakses di browser par1: string, par2: route
 }

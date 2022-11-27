@@ -25,8 +25,15 @@
             <li class="liContact"><a href="/contact" class="aContact">Contact Me</a></li>
         </ul>
     </nav>
+    <!-- End navbar -->
+
+    <!-- Messade Box -->
+        {{ if .pesan }}
+            <div class="message">{{.pesan }}</div>
+        {{ end }}
+    <!-- End message box --> 
     
-    <!-- add my project -->
+    <!-- add project -->
     <section>
         <div class="form-container" >
             <h2>ADD MY PROJECT</h2>
@@ -70,7 +77,8 @@
                 <button type="submit" class="btn-submit">Submit</button>
             </form>
         </div>
-    </section> 
+    </section>
+    <!-- End add project -->
     <script src="public/js/project.js"></script>
 </body>
 </html>

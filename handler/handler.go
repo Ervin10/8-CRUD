@@ -2,6 +2,7 @@ package handler
 
 import (
 	"7-routing/model"
+	"7-routing/validation"
 	"fmt"
 	"log"
 	"net/http"
@@ -58,6 +59,9 @@ func HandleContact(w http.ResponseWriter, r *http.Request) {
 
 func HandleAddProject(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(r) // r berisi seluruh data form
+	w.Header().Set("Content-type", "text/html; charset=utf-8")
+	temp, _ := template.ParseFiles("views/project.html")
+
 	err := r.ParseForm()
 	if err != nil {
 		log.Fatal(err)
@@ -97,18 +101,33 @@ func HandleAddProject(w http.ResponseWriter, r *http.Request) {
 		Desc:        desc,
 		Tech:        checkboxs,
 	}
-
 	// Kemudian panggil local storage dan append object newData
-	model.DataProjects = append(model.DataProjects, newData)
+
+	// Validation (Panggil function validation untuk melakukan validasi setelah data berhasil ditambahkan)
+	validation := validation.NewValidation()
+	project := model.Project{}
+
+	data := make(map[string]interface{})
+	vErrors := validation.Struct(project)
+
+	if vErrors != nil {
+		data["project"] = project
+		// data["validation"] = vErrors
+	} else {
+		data["pesan"] = "Data project berhasil ditambahkan"
+		model.DataProjects = append(model.DataProjects, newData)
+	}
+	// End validaiton
+
+	temp.Execute(w, data)
 
 	// Panggil method redirect agar Setelah data dikirim, maka routing akan berpindah ke halaman index
-	http.Redirect(w, r, "/", http.StatusMovedPermanently)
-	fmt.Println("Data telah berhasil ditambahkan")
+	// http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
 func HandleDetailProject(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
-	tmpt, err := template.ParseFiles("views/project-detail.html")
+	temp, err := template.ParseFiles("views/project-detail.html")
 
 	if err != nil {
 		w.Write([]byte("Message : " + err.Error()))
@@ -124,17 +143,7 @@ func HandleDetailProject(w http.ResponseWriter, r *http.Request) {
 		"DataProjects": DataProjects[id],
 	}
 
-	tmpt.Execute(w, dataProject)
-}
-
-func HandleDeleteProject(w http.ResponseWriter, r *http.Request) {
-
-	id, _ := strconv.Atoi(mux.Vars(r)["id"])
-
-	model.DataProjects = append(model.DataProjects[:id], model.DataProjects[id+1:]...)
-
-	http.Redirect(w, r, "/", http.StatusFound)
-	fmt.Println("Data dengan ID ke", id, " berhasil dihapus")
+	temp.Execute(w, dataProject)
 }
 
 func HandleEditProject(w http.ResponseWriter, r *http.Request) {
@@ -209,4 +218,12 @@ func HandleEditProject(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 		fmt.Println("Data telah berhasil diedit")
 	}
+}
+
+func HandleDeleteProject(w http.ResponseWriter, r *http.Request) {
+
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	model.DataProjects = append(model.DataProjects[:id], model.DataProjects[id+1:]...)
+
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
